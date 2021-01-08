@@ -1,4 +1,6 @@
 package com.llw.music.adapter;
+import android.graphics.drawable.Drawable;
+
 import androidx.annotation.Nullable;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
@@ -28,7 +30,6 @@ public class MusicListAdapter extends BaseQuickAdapter<Song, BaseViewHolder>{
                 //是因为位置和1都是整数类型，直接赋值给TextView会报错，故而拼接了""
                 .setText(R.id.tv_position,helper.getAdapterPosition()+1+"");
         helper.addOnClickListener(R.id.item_music);//给item添加点击事件，点击之后传递数据到播放页面或者在本页面进行音乐播放
-
 
     }
 }

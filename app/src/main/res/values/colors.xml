@@ -55,6 +55,7 @@
     <color name="color_transparent">#00000000</color>
     <color name="color_transparent_20">#33000000</color>
     <color name="color_transparent_10">#1F000000</color>
+    <color name="color_transparent_1">#fff</color>
     <color name="half_transparent">#3f000000</color>
     <!--橙色-->
     <color name="color_orange">#f59405</color>

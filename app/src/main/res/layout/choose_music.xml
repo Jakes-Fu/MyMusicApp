@@ -2,9 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/music_list">
-
+    android:layout_height="@dimen/dp_40"
+    android:id="@+id/music_list_item"
+    android:background="@color/color_transparent_10"
+    android:foreground="@drawable/bg_white"
+    android:layout_marginBottom="@dimen/dp_2"
+    android:gravity="center_vertical">
     <LinearLayout
         android:id="@+id/item_music"
         android:layout_width="match_parent"
@@ -38,23 +41,23 @@
                     android:layout_gravity="center"
                     android:maxLines="1"
                     android:textColor="#fff"
-                    android:textSize="@dimen/sp_20" />
+                    android:textSize="@dimen/sp_18" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:text=" - "
-                    android:textSize="@dimen/sp_20"
+                    android:textSize="@dimen/sp_18"
                     android:textColor="#fff"/>
                 <TextView
                     android:id="@+id/tv_singer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="歌手"
-                    android:layout_marginTop="@dimen/dp_6"
+                    android:layout_marginTop="@dimen/dp_9"
                     android:maxLines="1"
                     android:textColor="#fff"
-                    android:textSize="@dimen/sp_16"/>
+                    android:textSize="@dimen/sp_12"/>
 
             </LinearLayout>
 
