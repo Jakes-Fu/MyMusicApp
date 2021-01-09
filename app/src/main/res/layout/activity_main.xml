@@ -23,11 +23,14 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
 
-                <!--Toolbar-->
-                <include layout="@layout/title_toolbar"/>
+                <!--音乐播放界面-->
+                <include layout="@layout/activity_music_player"/>
 
                 <!--扫描歌曲的布局-->
                 <include layout="@layout/music_scan"/>
+
+                <!--Toolbar-->
+                <include layout="@layout/title_toolbar"/>
 
                 <!--播放内容-->
                 <include layout="@layout/music_text"/>

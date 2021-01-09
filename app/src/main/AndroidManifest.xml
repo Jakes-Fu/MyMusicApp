@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/music_logo_blue"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".musicPlayerActivity"></activity>
         <activity android:name=".ChooseMusicItem" />
         <activity android:name=".MainActivity">
             <intent-filter>

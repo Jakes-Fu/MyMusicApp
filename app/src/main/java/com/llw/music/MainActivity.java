@@ -1,8 +1,11 @@
 package com.llw.music;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.icu.text.Transliterator;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
@@ -57,10 +60,37 @@ import static com.llw.music.utils.DateUtil.parseTime;
 
 public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
 
-//    @BindView(R.id.music_play_or_pause)
-//    ImageView musicPlayOrPause;
-//    @BindView(R.id.music_fragment)
-//    LinearLayout musicFragment;
+    /**
+     * activity_music_player里的相关布局*/
+    @BindView(R.id.music_player)
+    LinearLayout musicPlayer;
+    @BindView(R.id.music_btn_back)
+    ImageView musicBack;
+    @BindView(R.id.music_album_art)
+    ImageView musicAlbumArt;
+    @BindView(R.id.music_song_name)
+    TextView musicSongName;
+    @BindView(R.id.music_singer_name)
+    TextView musicSingerName;
+    @BindView(R.id.music_play_time)
+    TextView musicPlayTime;
+    @BindView(R.id.music_time_seekBar)
+    SeekBar musicTimeSeekBar;
+    @BindView(R.id.music_total_time)
+    TextView musicTotalTime;
+    @BindView(R.id.player_album_img)
+    ImageView playerAlbumImg;
+    @BindView(R.id.music_btn_previous)
+    ImageView musicBtnPrevious;
+    @BindView(R.id.music_btn_play_or_pause)
+    ImageView musicBtnPlayOrPause;
+    @BindView(R.id.music_btn_next)
+    ImageView musicBtnNext;
+    @BindView(R.id.music_selected_player_list)
+    ImageView musicSelectedPlayerList;
+
+    /**
+    * activity_main里的相关布局*/
     @BindView(R.id.btn_close)
     TextView btnClose;
     @BindView(R.id.drawer_layout)
@@ -85,12 +115,12 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     TextView tvTitle;
 //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
-    @BindView(R.id.tv_play_time)
-    TextView tvPlayTime;
-    @BindView(R.id.time_seekBar)
-    SeekBar timeSeekBar;
-    @BindView(R.id.tv_total_time)
-    TextView tvTotalTime;
+//    @BindView(R.id.tv_play_time)
+//    TextView tvPlayTime;
+//    @BindView(R.id.time_seekBar)
+//    SeekBar timeSeekBar;
+//    @BindView(R.id.tv_total_time)
+//    TextView tvTotalTime;
     @BindView(R.id.btn_previous)
     ImageView btnPrevious;
     @BindView(R.id.btn_play_or_pause)
@@ -117,7 +147,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     private int i = 0;
     private boolean playMusic = false;
     private boolean firstClick = true;
-//    private ImageView musicPlayOrPause;
 
     // 记录当前播放歌曲的位置
     public int mCurrentPosition;
@@ -128,8 +157,11 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         public boolean handleMessage(Message message) {
             // 展示给进度条和当前时间
             int progress = mediaPlayer.getCurrentPosition();
-            timeSeekBar.setProgress(progress);
-            tvPlayTime.setText(parseTime(progress));
+//            timeSeekBar.setProgress(progress);
+//            tvPlayTime.setText(parseTime(progress));
+
+            musicTimeSeekBar.setProgress(progress);
+            musicPlayTime.setText(parseTime(progress));
             // 继续定时发送数据
             updateProgress();
             return true;
@@ -153,7 +185,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         ButterKnife.bind(this);
         StatusBarUtil.StatusBarLightMode(this);
         rxPermissions = new RxPermissions(this);//使用前先实例化
-        timeSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);//滑动条监听
+//        timeSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);//滑动条监听
+        musicTimeSeekBar.setOnSeekBarChangeListener(seekBarChangeListener);
         musicData = SPUtils.getString(Constant.MUSIC_DATA_FIRST, "yes", this);
 //        musicPlayOrPause = (ImageView) findViewById(R.id.music_play_or_pause);
 
@@ -188,6 +221,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     private void initMusic() {
         mList = new ArrayList<>();//实例化
         scanLay.setVisibility(View.GONE);
+        musicPlayer.setVisibility(View.GONE);
 //        musicPlayOrPause.setVisibility(View.GONE);
         //数据赋值
         mList = MusicUtils.getMusicData(this);//将扫描到的音乐赋值给音乐列表
@@ -242,6 +276,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
                     if (playMusic == false && firstClick == true){//初始化app，点击任意一首歌曲的操作
                         mCurrentPosition = position;
                         changeMusic(mCurrentPosition);
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                         playMusic = true;
                         firstClick = false;
                         i = 1;
@@ -253,35 +288,37 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
                         tvPlaySongInfo.setSelected(true);
                         playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_play_state));
                         btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
                         playMusic = false;
                     }
-                    else if (playMusic == false && firstClick == false && mCurrentPosition == position){//音乐暂停，点击相同歌曲的操作
+                    else if (playMusic == false && firstClick == false && mCurrentPosition == position){//音乐暂停时，点击相同歌曲的操作
                         mediaPlayer.start();
 //                        musicPlayOrPause.setVisibility(View.VISIBLE);
 //                        musicPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
                         tvPlaySongInfo.setSelected(true);
                         playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
                         btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                         playMusic = true;
                     }
-                    else if (playMusic == true && firstClick == false && mCurrentPosition != position){//音乐播放，点击不同于当前歌曲的操作
+                    else if (playMusic == true && firstClick == false && mCurrentPosition != position){//音乐播放时，点击不同于当前歌曲的操作
                         mCurrentPosition = position;
                         changeMusic(mCurrentPosition);
                         tvPlaySongInfo.setSelected(true);
                         playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
                         btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                     }
-                    else if (playMusic == false && firstClick == false && mCurrentPosition != position){//音乐暂停，点击不同于当前歌曲的操作
+                    else if (playMusic == false && firstClick == false && mCurrentPosition != position){//音乐暂停时，点击不同于当前歌曲的操作
                         mCurrentPosition = position;
                         changeMusic(mCurrentPosition);
                         tvPlaySongInfo.setSelected(true);
                         playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
                         btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                         playMusic = true;
                     }
-
 //                    mAdapter.notifyItemRangeChanged(0, mList.size());
-
                 }
             }
         });
@@ -305,8 +342,10 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     }
 
 
+
     @OnClick({R.id.change_background,R.id.btn_scan, R.id.btn_previous, R.id.btn_play_or_pause,
-            R.id.btn_next,R.id.back_btn,R.id.selected_music_list,R.id.btn_close})
+            R.id.btn_next,R.id.back_btn,R.id.selected_music_list,R.id.btn_close,R.id.play_album_img,
+            R.id.music_btn_back,R.id.music_btn_previous,R.id.music_btn_play_or_pause,R.id.music_btn_next,R.id.music_selected_player_list})
     public void onViewClicked(View view) {
         switch (view.getId()) {
 //            case R.id.change_background:
@@ -369,6 +408,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
                 if (mediaPlayer == null) {
                     tvPlaySongInfo.setSelected(true);//跑马灯效果
                     playStateLay.setVisibility(View.VISIBLE);
+                    musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                     changeMusic(0);
                     i = 1;
                 } else {
@@ -382,6 +422,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 //                        Drawable leftImg = getResources().getDrawable(R.mipmap.list_play_state);
 //                        leftImg.setBounds(0, 0, leftImg.getMinimumWidth(), leftImg.getMinimumHeight());
 //                        tvPlaySongInfo.setCompoundDrawables(leftImg, null, null, null);
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
                         playMusic = false;
                     } else {
                         mediaPlayer.start();
@@ -389,6 +430,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
                         playStateLay.setVisibility(View.VISIBLE);
                         btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                         playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                         playMusic = true;
                     }
                 }
@@ -405,9 +447,49 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
                 chooseMusic.closeDrawers();
 //                musicFragment.setVisibility(View.GONE);
 //                back_btn.setVisibility(View.VISIBLE);
+                break;
+            case R.id.play_album_img:
+                musicPlayer.setVisibility(View.VISIBLE);
+                break;
+                /**
+                * 这里开始都是musicPlayer界面的逻辑操作*/
+            case R.id.music_btn_back:
+                musicPlayer.setVisibility(View.GONE);
+                break;
+            case R.id.music_btn_previous:
+                changeMusic(--mCurrentPosition);
+                break;
+            case R.id.music_btn_play_or_pause:
+                // 首次点击播放按钮，默认播放第0首，下标从0开始
+                if (mediaPlayer == null) {
+                    changeMusic(0);
+                } else {
+                    if (mediaPlayer.isPlaying()) {
+                        mediaPlayer.pause();
+                        playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_play_state));
+                        btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_pause));
+                        playMusic = false;
+                    } else {
+                        mediaPlayer.start();
+                        playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
+                        btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
+                        musicBtnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
+                        playMusic = true;
+                    }
+                }
+                break;
+            case R.id.music_btn_next:
+                changeMusic(++mCurrentPosition);
+                break;
+            case R.id.music_selected_player_list:
+                chooseMusic.openDrawer(GravityCompat.START);//打开drawlayout滑动菜单
+                break;
         }
     }
 
+
+    private int position;
     //切歌
     private void changeMusic(int position) {
 
@@ -424,6 +506,16 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             mediaPlayer.setOnCompletionListener(this);//监听音乐播放完毕事件，自动下一曲
         }
 
+//    /**
+//     * 在这里加入点击专辑图片的监听器*/
+//
+//        albumImg.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                musicPlayer.setVisibility(View.VISIBLE);
+//            }
+//        });
+
         try {
             // 切歌之前先重置，释放掉之前的资源
             mediaPlayer.reset();
@@ -432,10 +524,12 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             mediaPlayer.setDataSource(mList.get(position).path);
 
             tvPlaySongInfo.setText("歌名： " + mList.get(position).song + "   歌手： " + mList.get(position).singer);
-
+            musicSongName.setText(mList.get(position).song);
+            musicSingerName.setText(mList.get(position).singer);
 
             //使用ImageBitmap来加载专辑图片
             albumImg.setImageBitmap(MusicUtils.getAlbumPicture(MyApplication.getContext(),mList.get(position).getPath()));
+            musicAlbumArt.setImageBitmap(MusicUtils.getAlbumPicture(MyApplication.getContext(),mList.get(position).getPath()));
 
             //使用Glide动态加载初始化专辑图片
 //            Glide.with(this).load(R.mipmap.icon_empty).into(albumImg);
@@ -451,9 +545,13 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         }
 
         // 切歌时重置进度条并展示歌曲时长
-        timeSeekBar.setProgress(0);
-        timeSeekBar.setMax(mediaPlayer.getDuration());
-        tvTotalTime.setText(parseTime(mediaPlayer.getDuration()));
+//        timeSeekBar.setProgress(0);
+//        timeSeekBar.setMax(mediaPlayer.getDuration());
+//        tvTotalTime.setText(parseTime(mediaPlayer.getDuration()));
+
+        musicTimeSeekBar.setProgress(0);
+        musicTimeSeekBar.setMax(mediaPlayer.getDuration());
+        musicTotalTime.setText(parseTime(mediaPlayer.getDuration()));
 
         updateProgress();
         if (mediaPlayer.isPlaying()) {
@@ -493,11 +591,11 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         public void onStopTrackingTouch(SeekBar seekBar) {
             int progress = seekBar.getProgress();
             mediaPlayer.seekTo(progress);
+
             if (playMusic == true){
                 mediaPlayer.start();
             }else {
                 mediaPlayer.start();
-//                playStateLay.setVisibility(View.VISIBLE);
                 btnPlayOrPause.setBackground(getResources().getDrawable(R.mipmap.icon_play));
                 playStateImg.setBackground(getResources().getDrawable(R.mipmap.list_pause_state));
             }
