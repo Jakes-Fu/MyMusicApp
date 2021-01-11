@@ -17,10 +17,19 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/dp_6"
             android:gravity="center_vertical"
-            android:text="播放队列"
+            android:text=" "
             android:textColor="#fff"
             android:textSize="24sp" />
     </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:text="播放队列"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/dp_6"
+        android:gravity="center_vertical"
+        android:textColor="#fff"
+        android:textSize="22sp"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -34,7 +43,7 @@
             android:id="@+id/btn_close"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_20"
             android:text="关闭"
             android:textColor="#fff"

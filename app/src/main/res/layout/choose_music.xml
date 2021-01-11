@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_40"
+    android:layout_height="@dimen/dp_30"
     android:id="@+id/music_list_item"
     android:background="@color/color_transparent_10"
     android:foreground="@drawable/bg_white"

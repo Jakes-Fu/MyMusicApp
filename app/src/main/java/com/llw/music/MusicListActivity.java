@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import static com.llw.music.utils.DateUtil.parseTime;
 
 
-public class ChooseMusicList extends Fragment implements MediaPlayer.OnCompletionListener {
+public class MusicListActivity extends Fragment implements MediaPlayer.OnCompletionListener {
 
     private static final int INTERNAL_TIME = 1000;
     private ArrayAdapter<String> adapter;

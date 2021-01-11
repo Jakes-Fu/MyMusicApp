@@ -20,13 +20,14 @@
             android:id="@+id/music_btn_back"
             android:layout_width="@dimen/dp_25"
             android:layout_height="@dimen/dp_25"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/dp_3"
             android:layout_alignParentLeft="true"
-            android:background="@mipmap/ic_back" />
+            android:background="@mipmap/ic_back"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
             android:layout_centerInParent="true"
             android:text="听尘音乐"
             android:textColor="@color/white"
@@ -47,7 +48,7 @@
             android:id="@+id/music_album_art"
             android:layout_width="@dimen/dp_300"
             android:layout_height="@dimen/dp_400"
-            android:layout_centerInParent="true"/>
+            android:layout_centerInParent="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -69,9 +70,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/music_song_name"
-            android:text="演唱者"
+            android:text="歌手"
             android:textColor="#FFFFFF"
-            android:textSize="@dimen/dp_18" />
+            android:textSize="@dimen/dp_16" />
     </RelativeLayout>
 
     <LinearLayout
@@ -142,23 +143,23 @@
                     android:id="@+id/music_btn_previous"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
-                    android:background="@mipmap/icon_previous"
+                    android:background="@mipmap/music_previous"
                     android:layout_alignParentLeft="true"/>
                 <!--播放或暂停-->
                 <ImageView
                     android:id="@+id/music_btn_play_or_pause"
-                    android:layout_width="@dimen/dp_44"
-                    android:layout_height="@dimen/dp_44"
+                    android:layout_width="@dimen/dp_60"
+                    android:layout_height="@dimen/dp_60"
                     android:layout_marginLeft="@dimen/dp_20"
                     android:layout_marginRight="@dimen/dp_20"
-                    android:background="@mipmap/icon_pause"
+                    android:background="@mipmap/music_pause"
                     android:layout_centerInParent="true"/>
                 <!--下一曲-->
                 <ImageView
                     android:id="@+id/music_btn_next"
                     android:layout_width="@dimen/dp_40"
                     android:layout_height="@dimen/dp_40"
-                    android:background="@mipmap/icon_next"
+                    android:background="@mipmap/music_next"
                     android:layout_alignParentRight="true"/>
             </LinearLayout>
 
@@ -167,7 +168,7 @@
                 android:layout_width="@dimen/dp_40"
                 android:layout_height="@dimen/dp_40"
                 android:layout_marginRight="@dimen/dp_15"
-                android:background="@mipmap/ic_menu"/>
+                android:background="@mipmap/menu"/>
 
         </LinearLayout>
 

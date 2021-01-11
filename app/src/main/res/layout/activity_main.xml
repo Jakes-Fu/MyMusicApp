@@ -2,7 +2,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/activity_main_lay"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@mipmap/img_main_bg_1">
 
     <!--每日必应一图-->
     <ImageView
@@ -23,11 +24,11 @@
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true">
 
-                <!--音乐播放界面-->
-                <include layout="@layout/activity_music_player"/>
-
                 <!--扫描歌曲的布局-->
                 <include layout="@layout/music_scan"/>
+
+                <!--音乐播放界面-->
+                <include layout="@layout/activity_music_player"/>
 
                 <!--Toolbar-->
                 <include layout="@layout/title_toolbar"/>
@@ -51,7 +52,7 @@
 <!--        <include layout="@layout/music_fragment"/>-->
         <fragment
             android:id="@+id/choose_music_fragment"
-            android:name="com.llw.music.ChooseMusicList"
+            android:name="com.llw.music.MusicListActivity"
             android:layout_width="@dimen/dp_500"
             android:layout_height="match_parent"
             android:layout_gravity="start"/>
