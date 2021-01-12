@@ -1,8 +1,12 @@
 package com.llw.music;
 
 import android.Manifest;
+import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.icu.text.Transliterator;
@@ -10,6 +14,7 @@ import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -25,8 +30,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -37,6 +45,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.llw.music.adapter.ChooseMusicListAdapter;
 import com.llw.music.adapter.MusicListAdapter;
 import com.llw.music.model.Song;
+import com.llw.music.service.MusicService;
 import com.llw.music.utils.Constant;
 import com.llw.music.utils.HttpUtil;
 import com.llw.music.utils.MusicUtils;
@@ -150,6 +159,14 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     @BindView(R.id.show_music_info)
     TextView musicInfo;
 
+    private static final String TAG = "MainActivity";
+    /**
+    * 绑定服务及通知栏*/
+    private MusicService.MusicBinder musicBinder;
+    private MusicService musicService;
+
+    /**
+     * 播放界面所需变量*/
     private ChooseMusicListAdapter adapter;//歌曲列表适配器
     private MusicListAdapter mAdapter;//歌曲适配器
     private List<Song> mList;//歌曲列表
@@ -195,6 +212,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
         setContentView(R.layout.activity_main);
+
+
         ActivityCollector.addActivity(this);//将当前活动添加到活动管理器中
         ButterKnife.bind(this);
         StatusBarUtil.StatusBarLightMode(this);
@@ -219,10 +238,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             scanLay.setVisibility(View.VISIBLE);
         }
 
-        //获取左碎片
-//        MusicListActivity musicListActivity = (MusicListActivity) getSupportFragmentManager()
-//                .findFragmentById(R.id.choose_music_fragment);
-
     }
 
     private void permissionRequest() {//使用这个框架需要制定JDK版本，建议用1.8
@@ -239,8 +254,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     //获取音乐列表
     private void initMusic() {
         mList = new ArrayList<>();//实例化
-        scanLay.setVisibility(View.GONE);
         musicPlayer.setVisibility(View.GONE);
+        scanLay.setVisibility(View.VISIBLE);
         back_btn.setVisibility(View.VISIBLE);
 //        musicPlayOrPause.setVisibility(View.GONE);
         //数据赋值
@@ -270,6 +285,9 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 //                }
 //            });
         }
+//        Intent serviceIntent = new Intent(MyApplication.getContext(),MusicService.class);
+//        bindService(serviceIntent, connection, BIND_AUTO_CREATE);
+
         adapter = new ChooseMusicListAdapter(R.layout.choose_music,mList);
         mAdapter = new MusicListAdapter(R.layout.item_music_rv_list, mList);//指定适配器的布局和数据源
         //线性布局管理器，可以设置横向还是纵向，RecyclerView默认是纵向的，所以不用处理,如果不需要设置方向，代码还可以更加的精简如下
@@ -374,6 +392,21 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         StatusBarUtil.transparencyBar(this);
     }
 
+    /**
+     * 连接服务*/
+//    private ServiceConnection connection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            musicBinder = (MusicService.MusicBinder) service;
+//            musicService = musicBinder.getService();
+//            Log.d(TAG,"service与activity已连接");
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//            musicBinder = null;
+//        }
+//    };
 
 
     @OnClick({R.id.change_background,R.id.btn_scan,  R.id.btn_play_or_pause,R.id.back_btn,R.id.list_title,
@@ -688,6 +721,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     @Override
     protected void onDestroy(){
         super.onDestroy();
+//        unbindService(connection);
         ActivityCollector.removeActivity(this);
+//        System.exit(0);
     }
 }

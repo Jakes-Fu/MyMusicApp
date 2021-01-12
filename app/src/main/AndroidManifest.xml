@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.llw.music">
+
     <!-- 文件读取权限  Android6.0 以后需要动态获取  10.0之后对文件的处理更复杂了 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -18,6 +19,11 @@
         android:roundIcon="@mipmap/music_logo_blue"
         android:supportsRtl="true"
         android:theme="@style/SplashTheme">
+        <service
+            android:name=".service.MusicService"
+            android:enabled="true"
+            android:exported="true"></service>
+
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
