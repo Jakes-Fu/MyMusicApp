@@ -22,6 +22,7 @@ public class ActivityCollector {
             if (!activity.isFinishing()){
                 activity.finish();
                 android.os.Process.killProcess(android.os.Process.myPid());
+                System.exit(0);
             }
         }
         activities.clear();

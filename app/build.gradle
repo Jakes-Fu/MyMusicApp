@@ -19,6 +19,11 @@ android {
         targetCompatibility = 1.8
     }
 
+    //使用dataBinding
+    dataBinding {
+        enabled = true
+    }
+
     // 自定义打包名称
     android.applicationVariants.all { variant ->
         variant.outputs.all {

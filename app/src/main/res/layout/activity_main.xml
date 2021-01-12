@@ -53,7 +53,7 @@
         <fragment
             android:id="@+id/choose_music_fragment"
             android:name="com.llw.music.MusicListActivity"
-            android:layout_width="@dimen/dp_500"
+            android:layout_width="@dimen/dp_400"
             android:layout_height="match_parent"
             android:layout_gravity="start"/>
 

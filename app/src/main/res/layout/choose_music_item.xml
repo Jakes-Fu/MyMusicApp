@@ -6,34 +6,33 @@
     android:layout_height="match_parent"
     android:visibility="visible"
     android:orientation="vertical"
-    android:background="#99000000">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize">
-        <TextView
-            android:id="@+id/list_title"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/dp_6"
-            android:gravity="center_vertical"
-            android:text=" "
-            android:textColor="#fff"
-            android:textSize="24sp" />
-    </LinearLayout>
+    android:weightSum="3">
     <TextView
+        android:id="@+id/list_title"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:text="播放队列"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/dp_6"
         android:gravity="center_vertical"
+        android:text=" "
         android:textColor="#fff"
-        android:textSize="22sp"/>
+        android:textSize="24sp" />
+<!--    </LinearLayout>-->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:background="#99000000">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:text="播放队列"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_gravity="center"
+            android:gravity="center_vertical"
+            android:textColor="#fff"
+            android:textSize="22sp" />
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_view"
             android:layout_width="match_parent"
@@ -42,12 +41,12 @@
         <TextView
             android:id="@+id/btn_close"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="关闭"
             android:textColor="#fff"
             android:textSize="20sp" />
-    </LinearLayout>
+        </LinearLayout>
 
 </LinearLayout>

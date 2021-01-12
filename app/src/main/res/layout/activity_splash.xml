@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.SplashActivity"
+        android:background="@color/holo_blue_light">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/dp_160">
+            <ImageView
+                android:id="@+id/music_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@drawable/icon_logo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/music_logo"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="听 尘 音 乐"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_26" />
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_translate"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="听 尘 音 乐"-->
+<!--                android:background="@color/holo_blue_light"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:textSize="@dimen/sp_26" />-->
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</layout>

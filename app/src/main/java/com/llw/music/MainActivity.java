@@ -34,6 +34,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.llw.music.adapter.ChooseMusicListAdapter;
 import com.llw.music.adapter.MusicListAdapter;
 import com.llw.music.model.Song;
 import com.llw.music.utils.Constant;
@@ -59,6 +60,15 @@ import okhttp3.Response;
 import static com.llw.music.utils.DateUtil.parseTime;
 
 public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCompletionListener {
+
+    /**
+     * 播放列表draw_layout的相关布局*/
+//    @BindView(R.id.music_list_item)
+//    LinearLayout musicListItem;
+    @BindView(R.id.btn_close)
+    TextView btnClose;
+//    @BindView(R.id.list_view)
+//    RecyclerView listView;
 
     /**
      * activity_music_player里的相关布局*/
@@ -91,8 +101,6 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 
     /**
     * activity_main里的相关布局*/
-    @BindView(R.id.btn_close)
-    TextView btnClose;
     @BindView(R.id.drawer_layout)
     DrawerLayout chooseMusic;
     @BindView(R.id.selected_music_list)
@@ -113,6 +121,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     TextView change_background;
     @BindView(R.id.tv_title)
     TextView tvTitle;
+    @BindView(R.id.list_title)
+    TextView listTitle;
 //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
 //    @BindView(R.id.tv_play_time)
@@ -132,14 +142,15 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 //    @BindView(R.id.play_state_img)
 //    ImageView playStateImg;
 //    @BindView(R.id.play_state_lay)
-    LinearLayout playStateLay;
+//    LinearLayout playStateLay;
     @BindView(R.id.back_btn)
-    ImageButton back_btn;
+    TextView back_btn;
     @BindView(R.id.play_album_img)
     ImageView albumImg;
     @BindView(R.id.show_music_info)
     TextView musicInfo;
 
+    private ChooseMusicListAdapter adapter;//歌曲列表适配器
     private MusicListAdapter mAdapter;//歌曲适配器
     private List<Song> mList;//歌曲列表
     private RxPermissions rxPermissions;//权限请求
@@ -207,6 +218,11 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         } else {
             scanLay.setVisibility(View.VISIBLE);
         }
+
+        //获取左碎片
+//        MusicListActivity musicListActivity = (MusicListActivity) getSupportFragmentManager()
+//                .findFragmentById(R.id.choose_music_fragment);
+
     }
 
     private void permissionRequest() {//使用这个框架需要制定JDK版本，建议用1.8
@@ -225,12 +241,13 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
         mList = new ArrayList<>();//实例化
         scanLay.setVisibility(View.GONE);
         musicPlayer.setVisibility(View.GONE);
+        back_btn.setVisibility(View.VISIBLE);
 //        musicPlayOrPause.setVisibility(View.GONE);
         //数据赋值
         mList = MusicUtils.getMusicData(this);//将扫描到的音乐赋值给音乐列表
         if (!ObjectUtils.isEmpty(mList) && mList != null) {
             scanLay.setVisibility(View.GONE);
-            back_btn.setVisibility(View.VISIBLE);
+//            back_btn.setVisibility(View.VISIBLE);
             SPUtils.putString(Constant.MUSIC_DATA_FIRST, "null", this);
         }else {
             Toast.makeText(MyApplication.getContext(),"没有扫描到歌曲",Toast.LENGTH_SHORT).show();
@@ -253,10 +270,11 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 //                }
 //            });
         }
-
+        adapter = new ChooseMusicListAdapter(R.layout.choose_music,mList);
         mAdapter = new MusicListAdapter(R.layout.item_music_rv_list, mList);//指定适配器的布局和数据源
         //线性布局管理器，可以设置横向还是纵向，RecyclerView默认是纵向的，所以不用处理,如果不需要设置方向，代码还可以更加的精简如下
         rvMusic.setLayoutManager(new LinearLayoutManager(this));
+//        listView.setLayoutManager(new LinearLayoutManager(this));
         //如果需要设置方向显示，则将下面代码注释去掉即可
 //        LinearLayoutManager manager = new LinearLayoutManager(this);
 //        manager.setOrientation(RecyclerView.HORIZONTAL);
@@ -264,6 +282,16 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 
         //设置适配器
         rvMusic.setAdapter(mAdapter);
+//        listView.setAdapter(adapter);
+
+//        adapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
+//            @Override
+//            public void onItemChildClick(BaseQuickAdapter adapter, View view, int position) {
+////                Toast.makeText(MyApplication.getContext(),"you click this",Toast.LENGTH_SHORT).show();
+//                mCurrentPosition = position;
+//                changeMusic(mCurrentPosition);
+//            }
+//        });
 
         //item的点击事件
         mAdapter.setOnItemChildClickListener(new BaseQuickAdapter.OnItemChildClickListener() {
@@ -348,11 +376,14 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 
 
 
-    @OnClick({R.id.change_background,R.id.btn_scan,  R.id.btn_play_or_pause,
-            R.id.back_btn,R.id.selected_music_list,R.id.btn_close,R.id.play_album_img,
+    @OnClick({R.id.change_background,R.id.btn_scan,  R.id.btn_play_or_pause,R.id.back_btn,R.id.list_title,
+            R.id.selected_music_list,R.id.btn_close,R.id.play_album_img,R.id.show_music_info,
             R.id.music_btn_back,R.id.music_btn_previous,R.id.music_btn_play_or_pause,R.id.music_btn_next,R.id.music_selected_player_list})
     public void onViewClicked(View view) {
         switch (view.getId()) {
+            case R.id.list_title:
+                chooseMusic.closeDrawers();
+
 //            case R.id.tv_clear_list: //清空数据
 //                mList.clear();
 //                mAdapter.notifyDataSetChanged();
@@ -372,6 +403,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 //                    mediaPlayer.pause();
 //                    mediaPlayer.reset();
 //                }
+                break;
             case R.id.change_background:
                 btnClose.setVisibility(View.VISIBLE);
                 /**
@@ -404,12 +436,16 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
                 break;
             case R.id.btn_scan://扫描本地歌曲
                 permissionRequest();
-                back_btn.setVisibility(View.GONE);
+//                back_btn.setVisibility(View.GONE);
                 break;
             case R.id.back_btn:
-                ActivityCollector.finishAll();
-//                scanLay.setVisibility(View.VISIBLE);
-//                back_btn.setVisibility(View.GONE);
+//                ActivityCollector.finishAll();
+//                Intent intent = getIntent();
+//                boolean isFirstInto = intent.getBooleanExtra("extra_FirstInto",true);
+//                Log.d("MainActivity", String.valueOf(isFirstInto));
+
+                scanLay.setVisibility(View.VISIBLE);
+                back_btn.setVisibility(View.GONE);
                 break;
 //            case R.id.btn_previous://上一曲
 //                changeMusic(--mCurrentPosition);//当前歌曲位置减1
@@ -457,6 +493,9 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
             case R.id.play_album_img:
                 musicPlayer.setVisibility(View.VISIBLE);
                 break;
+            case R.id.show_music_info:
+                musicPlayer.setVisibility(View.VISIBLE);
+                break;
                 /**
                 * 这里开始都是musicPlayer界面的逻辑操作*/
             case R.id.music_btn_back:
@@ -498,7 +537,7 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
 
     private int position;
     //切歌
-    private void changeMusic(int position) {
+    public void changeMusic(int position) {
 
         Log.e("MainActivity", "position:" + position);
         if (position < 0) {
