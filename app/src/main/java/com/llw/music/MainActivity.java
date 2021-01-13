@@ -1,40 +1,25 @@
 package com.llw.music;
 
 import android.Manifest;
-import android.content.ComponentName;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.icu.text.Transliterator;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,7 +30,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.llw.music.adapter.ChooseMusicListAdapter;
 import com.llw.music.adapter.MusicListAdapter;
 import com.llw.music.model.Song;
-import com.llw.music.service.MusicService;
 import com.llw.music.utils.Constant;
 import com.llw.music.utils.HttpUtil;
 import com.llw.music.utils.MusicUtils;
@@ -162,8 +146,8 @@ public class MainActivity extends AppCompatActivity implements MediaPlayer.OnCom
     private static final String TAG = "MainActivity";
     /**
     * 绑定服务及通知栏*/
-    private MusicService.MusicBinder musicBinder;
-    private MusicService musicService;
+//    private MusicService.MusicBinder musicBinder;
+//    private MusicService musicService;
 
     /**
      * 播放界面所需变量*/

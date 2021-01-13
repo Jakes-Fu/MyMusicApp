@@ -19,10 +19,6 @@
         android:roundIcon="@mipmap/music_logo_blue"
         android:supportsRtl="true"
         android:theme="@style/SplashTheme">
-        <service
-            android:name=".service.MusicService"
-            android:enabled="true"
-            android:exported="true"></service>
 
         <activity android:name=".SplashActivity">
             <intent-filter>
